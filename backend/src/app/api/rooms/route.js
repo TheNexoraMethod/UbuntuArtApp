@@ -11,20 +11,16 @@ function sortImages(images) {
 }
 
 export async function GET() {
-  const { data: rooms, error } = await supabaseAdmin
+  const { data, error } = await supabase
     .from("rooms")
-    .select(`
-      *,
-      room_images (
-        id,
-        room_id,
-        image_url,
-        is_primary,
-        display_order,
-        created_at,
-        updated_at
-      )
-    `)
+    .select(
+      `
+    id, title, description, price, capacity, amenities,
+    room_images (
+      id, room_id, image_url, display_order, is_primary
+    )
+  `,
+    )
     .order("id", { ascending: true });
 
   if (error) {
