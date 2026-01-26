@@ -16,7 +16,7 @@ export async function GET() {
     .from("rooms")
     .select(
       `
-      id, title, description, price, capacity, amenities,
+      id, title, description, price_per_night, capacity, amenities,
       room_images (
         id, room_id, image_url, display_order, is_primary
       )
