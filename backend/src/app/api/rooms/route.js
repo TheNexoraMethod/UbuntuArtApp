@@ -1,4 +1,5 @@
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { NextResponse } from "next/server"; // Add this if using Response/Request
 
 export const runtime = "nodejs";
 
@@ -8,6 +9,13 @@ function sortImages(images) {
     const db = b?.display_order ?? 0;
     return da - db;
   });
+}
+
+// Now use supabaseAdmin in your handlers, e.g.:
+export async function GET() {
+  const { data, error } = await supabaseAdmin.from("rooms").select("*");
+  // ...
+  return NextResponse.json(data);
 }
 
 export async function GET() {
