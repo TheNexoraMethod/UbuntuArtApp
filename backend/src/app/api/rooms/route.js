@@ -12,7 +12,7 @@ function sortImages(images) {
 }
 
 // Now use supabaseAdmin in your handlers, e.g.:
-export async function GET() {
+
   const { data, error } = await supabaseAdmin.from("rooms").select("*");
   // ...
   return NextResponse.json(data);
