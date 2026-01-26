@@ -1,0 +1,101 @@
+export function ImageUploadModal({ uploadModal, onClose, onSave, isPending }) {
+  if (!uploadModal) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    onSave({
+      uploadedUrl: uploadModal.uploadedUrl,
+      title: formData.get("title"),
+      description: formData.get("description"),
+      category: formData.get("category"),
+      isFeatured: formData.get("isFeatured") === "on",
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          <h3 className="text-xl font-semibold mb-4">Upload New Image</h3>
+          <form onSubmit={handleSubmit}>
+            <img
+              src={uploadModal.uploadedUrl}
+              alt="Preview"
+              className="w-full h-64 object-cover rounded-lg mb-4"
+            />
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Title
+                </label>
+                <input
+                  type="text"
+                  name="title"
+                  required
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  rows={3}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Category
+                </label>
+                <input
+                  type="text"
+                  name="category"
+                  placeholder="e.g., pottery, painting, sculpture"
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                />
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="isFeatured"
+                  id="isFeatured"
+                  className="h-4 w-4 text-green-700 rounded"
+                />
+                <label
+                  htmlFor="isFeatured"
+                  className="ml-2 text-sm text-gray-700"
+                >
+                  Featured image
+                </label>
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isPending}
+                className="flex-1 bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 disabled:opacity-50"
+              >
+                {isPending ? "Saving..." : "Save Image"}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
