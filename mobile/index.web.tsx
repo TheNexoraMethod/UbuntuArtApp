@@ -1,18 +1,19 @@
-import '@expo/metro-runtime';
-import { toPng } from 'html-to-image';
-import { serializeError } from 'serialize-error';
-import React, { useEffect } from 'react';
-import './__create/consoleToParent';
-import { renderRootComponent } from 'expo-router/build/renderRootComponent';
+import "@expo/metro-runtime";
+import { toPng } from "html-to-image";
+import { serializeError } from "serialize-error";
+import React, { useEffect } from "react";
+import { renderRootComponent } from "expo-router/build/renderRootComponent";
 
-import { LoadSkiaWeb } from '@shopify/react-native-skia/lib/module/web';
-import './__create/reset.css';
-import CreateApp from './App';
+import { LoadSkiaWeb } from "@shopify/react-native-skia/lib/module/web";
+import "./global.css";
+import CreateApp from "./App";
 async function inlineGoogleFonts(): Promise<void> {
   // Find all <link> elements that load Google Fonts CSS
-  const links = Array.from(document.querySelectorAll<HTMLLinkElement>(
-    'link[rel="stylesheet"][href*="fonts.googleapis.com"]'
-  ));
+  const links = Array.from(
+    document.querySelectorAll<HTMLLinkElement>(
+      'link[rel="stylesheet"][href*="fonts.googleapis.com"]',
+    ),
+  );
 
   for (const link of links) {
     try {
@@ -33,8 +34,7 @@ async function inlineGoogleFonts(): Promise<void> {
       const style = document.createElement("style");
       style.textContent = cssText;
       document.head.appendChild(style);
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   // Wait for all fonts to actually load
@@ -42,7 +42,6 @@ async function inlineGoogleFonts(): Promise<void> {
     await document.fonts.ready;
   }
 }
-
 
 const waitForScreenshotReady = async () => {
   const images = Array.from(document.images);
@@ -59,8 +58,8 @@ const waitForScreenshotReady = async () => {
           }
           img.onload = () => resolve(true);
           img.onerror = () => resolve(true);
-        })
-    )
+        }),
+    ),
   ]);
 
   // small buffer to ensure rendering is stable
@@ -76,7 +75,7 @@ export const useHandleScreenshotRequest = () => {
 
           const width = window.innerWidth;
           const height = window.innerHeight;
-          const app = document.querySelector<HTMLElement>('#root')
+          const app = document.querySelector<HTMLElement>("#root");
           if (!app) {
             throw new Error("Could not find app element");
           }
@@ -97,7 +96,7 @@ export const useHandleScreenshotRequest = () => {
 
           window.parent.postMessage(
             { type: "sandbox:web:screenshot:response", dataUrl },
-            "*"
+            "*",
           );
         } catch (error) {
           window.parent.postMessage(
@@ -105,7 +104,7 @@ export const useHandleScreenshotRequest = () => {
               type: "sandbox:web:screenshot:error",
               error: error instanceof Error ? error.message : String(error),
             },
-            "*"
+            "*",
           );
         }
       }
@@ -120,8 +119,7 @@ export const useHandleScreenshotRequest = () => {
 const CreateAppWithFonts = () => {
   useHandleScreenshotRequest();
   return <CreateApp />;
-
-}
+};
 LoadSkiaWeb().then(async () => {
-  renderRootComponent(CreateAppWithFonts)
+  renderRootComponent(CreateAppWithFonts);
 });
