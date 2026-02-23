@@ -12,6 +12,7 @@ import {
 import { useRouter } from "expo-router";
 import ScreenBackground from "../components/ScreenBackground.jsx";
 import { supabase } from "../lib/supabase";
+import { useAuthStore } from "@/utils/auth/store";
 
 export default function Login() {
   const router = useRouter();
@@ -38,8 +39,17 @@ export default function Login() {
         return;
       }
 
-      // Success - redirect to home
-      router.replace("/(tabs)/home");
+      // Immediately sync Zustand so the profile tab auth gate reflects
+      // the new session without waiting for onAuthStateChange.
+      if (data.session) {
+        useAuthStore.setState({
+          auth: { session: data.session, user: data.session.user },
+          isReady: true,
+        });
+      }
+
+      // Success — go to profile tab (auth gate will redirect to full profile)
+      router.replace("/(tabs)/profile");
     } catch (err) {
       Alert.alert("Login Error", err.message || "An error occurred");
       setLoading(false);

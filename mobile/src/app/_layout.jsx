@@ -1,5 +1,6 @@
 import { useAuth } from "@/utils/auth/useAuth";
-import { useAuthModal } from "@/utils/auth/store";
+import { useAuthModal, useAuthStore } from "@/utils/auth/store";
+import { supabase } from "@/lib/supabase";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
@@ -29,6 +30,25 @@ export default function RootLayout() {
   useEffect(() => {
     initiate();
   }, [initiate]);
+
+  // Keep Zustand in sync with ALL Supabase auth events (sign in, sign out,
+  // token refresh). This is the source of truth — not just the initiate() call.
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        useAuthStore.setState({
+          auth: { session, user: session.user },
+          isReady: true,
+        });
+      } else {
+        // SIGNED_OUT or no session
+        useAuthStore.setState({ auth: null, isReady: true });
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (isReady) {

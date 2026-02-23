@@ -7,22 +7,63 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import ScreenBackground from "../components/ScreenBackground.jsx";
+import { supabase } from "../lib/supabase";
+import { useAuthStore } from "@/utils/auth/store";
 
 export default function CreateAccount() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleCreateAccount() {
+  async function handleCreateAccount() {
     if (!name || !email || !password) {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-    Alert.alert("Success", "Account created (simulation).");
+    if (password.length < 6) {
+      Alert.alert("Error", "Password must be at least 6 characters.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: { data: { name: name.trim() } },
+      });
+
+      if (error) {
+        Alert.alert("Sign Up Failed", error.message);
+        return;
+      }
+
+      // If we got a session immediately (email confirmation disabled), sync Zustand
+      if (data.session) {
+        useAuthStore.setState({
+          auth: { session: data.session, user: data.session.user },
+          isReady: true,
+        });
+        router.replace("/(tabs)/profile");
+      } else {
+        // Email confirmation required
+        Alert.alert(
+          "Check your email",
+          "We sent a confirmation link to " + email.trim() + ". Tap it to activate your account, then sign in.",
+          [{ text: "OK", onPress: () => router.replace("/login") }],
+        );
+      }
+    } catch (err) {
+      Alert.alert("Error", err.message || "An error occurred");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -56,13 +97,25 @@ export default function CreateAccount() {
           value={password}
           onChangeText={setPassword}
         />
+        
 
-        <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
-          <Text style={styles.buttonText}>Create account</Text>
+        <TouchableOpacity
+          style={[styles.button, loading && { opacity: 0.6 }]}
+          onPress={handleCreateAccount}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#ffffff" />
+          ) : (
+            <Text style={styles.buttonText}>Create account</Text>
+          )}
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => router.push("/login")}>
-          <Text style={styles.linkText}>Already have an account? Login</Text>
+        <TouchableOpacity
+          style={styles.altButton}
+          onPress={() => router.push("/login")}
+        >
+          <Text style={styles.altButtonText}>Already have an account? Login</Text>
         </TouchableOpacity>
       </View>
     </ScreenBackground>
@@ -107,5 +160,19 @@ const styles = StyleSheet.create({
     color: "#E5E7EB",
     fontSize: 13,
     textAlign: "center",
+  },
+    altButton: {
+    marginTop: 4,
+    paddingVertical: 10,
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: "rgba(209,213,219,0.9)",
+    alignItems: "center",
+    backgroundColor: "rgba(31,41,55,0.4)",
+  },
+  altButtonText: {
+    color: "#E5E7EB",
+    fontSize: 13,
+    fontWeight: "600",
   },
 });

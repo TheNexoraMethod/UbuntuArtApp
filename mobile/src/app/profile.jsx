@@ -40,7 +40,14 @@ export default function ProfileScreen() {
   const router = useRouter();
   const { data: user, loading: userLoading, refetch } = useUser();
   const [upload, { loading: uploading }] = useUpload();
-  const { signOut } = useAuth();
+  const { signOut, isAuthenticated, isReady: authReady } = useAuth();
+
+  // Auth guard: if not authenticated, send back to the profile tab gate
+  useEffect(() => {
+    if (authReady && !isAuthenticated) {
+      router.replace("/(tabs)/profile");
+    }
+  }, [authReady, isAuthenticated, router]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

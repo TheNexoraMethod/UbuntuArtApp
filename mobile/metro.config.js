@@ -63,7 +63,6 @@ const SHARED_ALIASES = {
   "expo-image": path.resolve(__dirname, "./polyfills/shared/expo-image.tsx"),
 };
 
-
 // Add web-specific alias configuration through resolveRequest
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   try {
