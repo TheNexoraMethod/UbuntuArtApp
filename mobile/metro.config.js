@@ -7,11 +7,6 @@ const reportErrorToRemote = async () => {};
 const handleResolveRequestError = ({ error }) => {
   throw error;
 };
-const VIRTUAL_ROOT = path.join(__dirname, ".virtual-root");
-const VIRTUAL_ROOT_UNRESOLVED = path.join(
-  __dirname,
-  ".virtual-root-unresolved",
-);
 
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname);
@@ -67,12 +62,7 @@ const NATIVE_ALIASES = {
 const SHARED_ALIASES = {
   "expo-image": path.resolve(__dirname, "./polyfills/shared/expo-image.tsx"),
 };
-fs.mkdirSync(VIRTUAL_ROOT_UNRESOLVED, { recursive: true });
-config.watchFolders = [
-  ...config.watchFolders,
-  VIRTUAL_ROOT,
-  VIRTUAL_ROOT_UNRESOLVED,
-];
+
 
 // Add web-specific alias configuration through resolveRequest
 config.resolver.resolveRequest = (context, moduleName, platform) => {
