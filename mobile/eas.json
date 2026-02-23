@@ -1,0 +1,33 @@
+{
+  "cli": {
+    "version": ">= 15.0.15",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "autoIncrement": false,
+      "env": {
+        "EXPO_PUBLIC_APP_URL": "https://tnmubuntuapp.vercel.app",
+        "EXPO_PUBLIC_BASE_URL": "https://tnmubuntuapp.vercel.app",
+        "EXPO_PUBLIC_PROXY_BASE_URL": "https://tnmubuntuapp.vercel.app",
+        "EXPO_PUBLIC_BASE_CREATE_USER_CONTENT_URL": "https://raw.createusercontent.com",
+        "EXPO_PUBLIC_CREATE_ENV": "PRODUCTION",
+        "EXPO_PUBLIC_HOST": "206917e8-87bf-473f-9a7a-baa9ce464618.created.app",
+        "EXPO_PUBLIC_PROJECT_GROUP_ID": "206917e8-87bf-473f-9a7a-baa9ce464618",
+        "EXPO_PUBLIC_UPLOADCARE_PUBLIC_KEY": "b4d42a48905ed1c4f2fd",
+        "EXPO_PUBLIC_SUPABASE_URL": "https://lzvvvyotqhnsnbnaugyh.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx6dnZ2eW90cWhuc25ibmF1Z3loIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM5NzY1MjEsImV4cCI6MjA3OTU1MjUyMX0.jdqODEsE2SjOV0At541I2nzHl4-wWtWvZhSWQBFc_Ok"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
