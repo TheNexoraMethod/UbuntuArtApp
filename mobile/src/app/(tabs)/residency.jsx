@@ -1,7 +1,17 @@
 // apps/mobile/src/app/residency.jsx
 import React from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import ScreenBackground from "../../components/ScreenBackground.jsx";
+
+const APPLY_EMAIL = "info@ubuntuartvillage.com";
+const APPLY_SUBJECT = "Artist Residency";
 
 export default function ResidencyScreen() {
   return (
@@ -40,12 +50,22 @@ export default function ResidencyScreen() {
         <View style={styles.card}>
           <Text style={styles.cardTitle}>How to apply</Text>
           <Text style={styles.body}>
-            Applications open at selected times of the year. You’ll be asked to
-            share a portfolio, statement, and preferred dates.
+            Send us an email with your portfolio, a short artist statement, and
+            your preferred dates.
           </Text>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(
+                `mailto:${APPLY_EMAIL}?subject=${encodeURIComponent(APPLY_SUBJECT)}`,
+              )
+            }
+            activeOpacity={0.7}
+            style={styles.applyBtn}
+          >
+            <Text style={styles.applyBtnText}>✉️ Email us to apply</Text>
+          </TouchableOpacity>
           <Text style={styles.footer}>
-            Application form and status will appear here once the residency flow
-            is re‑enabled.
+            Email {APPLY_EMAIL} with “Artist Residency” in the subject line.
           </Text>
         </View>
       </ScrollView>
@@ -94,5 +114,18 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 12,
     color: "#6B7280",
+  },
+  applyBtn: {
+    backgroundColor: "#166534",
+    borderRadius: 10,
+    paddingVertical: 12,
+    alignItems: "center",
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  applyBtnText: {
+    color: "#FFFFFF",
+    fontWeight: "700",
+    fontSize: 15,
   },
 });

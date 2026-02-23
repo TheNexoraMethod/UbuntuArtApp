@@ -35,7 +35,10 @@ export default function PayTab() {
 
   const handlePayment = async () => {
     if (!amount || parseFloat(amount) <= 0) {
-      Alert.alert("Enter an amount", "Please enter the amount you want to pay.");
+      Alert.alert(
+        "Enter an amount",
+        "Please enter the amount you want to pay.",
+      );
       return;
     }
 
@@ -80,7 +83,13 @@ export default function PayTab() {
         keyboardShouldPersistTaps="handled"
       >
         {/* Header */}
-        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 24 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginBottom: 24,
+          }}
+        >
           <CreditCard size={26} color="#22C55E" />
           <View style={{ marginLeft: 12 }}>
             <Text style={{ fontSize: 22, fontWeight: "700", color: "#FFFFFF" }}>
@@ -182,9 +191,8 @@ export default function PayTab() {
           </TouchableOpacity>
 
           <Text style={styles.hint}>
-            You'll be redirected to{" "}
-            {provider === "monzo" ? "Monzo" : "Wise"} to complete your payment
-            securely.
+            You'll be redirected to {provider === "monzo" ? "Monzo" : "Wise"} to
+            complete your payment securely.
           </Text>
         </View>
       </ScrollView>
