@@ -55,7 +55,9 @@ export default function CreateAccount() {
         // Email confirmation required
         Alert.alert(
           "Check your email",
-          "We sent a confirmation link to " + email.trim() + ". Tap it to activate your account, then sign in.",
+          "We sent a confirmation link to " +
+            email.trim() +
+            ". Tap it to activate your account, then sign in.",
           [{ text: "OK", onPress: () => router.replace("/login") }],
         );
       }
@@ -97,7 +99,6 @@ export default function CreateAccount() {
           value={password}
           onChangeText={setPassword}
         />
-        
 
         <TouchableOpacity
           style={[styles.button, loading && { opacity: 0.6 }]}
@@ -115,7 +116,9 @@ export default function CreateAccount() {
           style={styles.altButton}
           onPress={() => router.push("/login")}
         >
-          <Text style={styles.altButtonText}>Already have an account? Login</Text>
+          <Text style={styles.altButtonText}>
+            Already have an account? Login
+          </Text>
         </TouchableOpacity>
       </View>
     </ScreenBackground>
@@ -161,7 +164,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     textAlign: "center",
   },
-    altButton: {
+  altButton: {
     marginTop: 4,
     paddingVertical: 10,
     borderRadius: 999,

@@ -34,23 +34,6 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Auth buttons */}
-        <View style={styles.authRow}>
-          <TouchableOpacity
-            style={styles.authButtonPrimary}
-            onPress={() => router.push("/login")}
-          >
-            <Text style={styles.authButtonTextPrimary}>Login</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.authButtonSecondary}
-            onPress={() => router.push("/create-account")}
-          >
-            <Text style={styles.authButtonTextSecondary}>Create account</Text>
-          </TouchableOpacity>
-        </View>
-
         {/* Quick actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Get started</Text>
@@ -157,38 +140,6 @@ const styles = StyleSheet.create({
     color: "#14532d",
     fontSize: 14,
     fontWeight: "700",
-  },
-  authRow: {
-    marginTop: 12,
-    marginBottom: 20,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    columnGap: 12,
-  },
-  authButtonPrimary: {
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 999,
-    backgroundColor: "rgba(15,118,110,0.95)",
-  },
-  authButtonTextPrimary: {
-    color: "#F9FAFB",
-    fontSize: 13,
-    fontWeight: "700",
-  },
-  authButtonSecondary: {
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 999,
-    borderWidth: 1,
-    borderColor: "rgba(209,213,219,0.8)",
-    backgroundColor: "rgba(31,41,55,0.4)",
-  },
-  authButtonTextSecondary: {
-    color: "#E5E7EB",
-    fontSize: 13,
-    fontWeight: "600",
   },
   section: {
     marginBottom: 24,

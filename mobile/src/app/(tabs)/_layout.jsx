@@ -7,7 +7,7 @@ import {
   Calendar,
   Image as ImageIcon,
   Users,
-  User,
+  CreditCard,
   Info,
   Phone,
 } from "lucide-react-native";
@@ -67,8 +67,8 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
-          tabBarIcon: ({ color }) => <User color={color} size={22} />,
+          title: "Pay",
+          tabBarIcon: ({ color }) => <CreditCard color={color} size={22} />,
         }}
       />
     </Tabs>
