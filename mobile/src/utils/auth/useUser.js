@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { useAuth } from "./useAuth";
 import { useAuthStore } from "./store";
 import { supabase } from "@/lib/supabase";
@@ -25,7 +25,7 @@ function mapSupabaseUser(raw) {
 
 export const useUser = () => {
   const { auth, isReady } = useAuth();
-  const { setAuth } = useAuthStore();
+  const setAuth = useAuthStore((s) => s.setAuth);
   const rawUser = auth?.user || null;
 
   // Memoize the mapped user so the object reference only changes when the
@@ -43,10 +43,14 @@ export const useUser = () => {
     ],
   );
 
+  // Keep a ref to the current user so fetchUser can return it on error
+  // without needing user in its useCallback deps (which would make it unstable).
+  const userRef = useRef(user);
+  userRef.current = user;
+
   /**
    * Refreshes user data from Supabase and updates the auth store.
    * Called after profile saves, email verification, etc.
-   * Uses functional setAuth update so we don't need auth/user in deps.
    */
   const fetchUser = useCallback(async () => {
     try {
@@ -58,8 +62,8 @@ export const useUser = () => {
     } catch (error) {
       console.error("❌ Error refreshing user:", error);
     }
-    return user;
-  }, [setAuth, user]);
+    return userRef.current;
+  }, [setAuth]); // setAuth is a stable Zustand action — no other deps needed
 
   return { user, data: user, loading: !isReady, refetch: fetchUser };
 };

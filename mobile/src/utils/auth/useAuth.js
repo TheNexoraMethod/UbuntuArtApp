@@ -1,10 +1,6 @@
-import { router } from "expo-router";
 import { supabase } from "@/lib/supabase";
-import * as SecureStore from "expo-secure-store";
-import { useCallback, useEffect, useMemo } from "react";
-import { create } from "zustand";
-import { Modal, View } from "react-native";
-import { useAuthModal, useAuthStore, authKey } from "./store";
+import { useCallback, useEffect } from "react";
+import { useAuthModal, useAuthStore } from "./store";
 
 /**
  * This hook provides authentication functionality.
@@ -13,20 +9,20 @@ import { useAuthModal, useAuthStore, authKey } from "./store";
  * directly.
  */
 export const useAuth = () => {
-  const { isReady, auth, setAuth } = useAuthStore();
-  const { isOpen, close, open } = useAuthModal();
+  const isReady = useAuthStore((s) => s.isReady);
+  const auth = useAuthStore((s) => s.auth);
+  const setAuth = useAuthStore((s) => s.setAuth);
+  const isOpen = useAuthModal((s) => s.isOpen);
+  const close = useAuthModal((s) => s.close);
+  const open = useAuthModal((s) => s.open);
 
   const initiate = useCallback(async () => {
     try {
-      // 1) Ask Supabase if there is already a saved session
+      // Ask Supabase if there is already a saved session
       const { data } = await supabase.auth.getSession();
 
       if (data.session) {
-        // If session exists, store both session and user
-        setAuth({
-          session: data.session,
-          user: data.session.user,
-        });
+        // Single combined setState: set both auth and isReady atomically
         useAuthStore.setState({
           auth: {
             session: data.session,
@@ -35,23 +31,13 @@ export const useAuth = () => {
           isReady: true,
         });
       } else {
-        // No session, mark as ready with no auth
-        useAuthStore.setState({
-          auth: null,
-          isReady: true,
-        });
+        useAuthStore.setState({ auth: null, isReady: true });
       }
     } catch (error) {
       console.error("Auth initiate error:", error);
-      // Still mark as ready even if there's an error
-      useAuthStore.setState({
-        auth: null,
-        isReady: true,
-      });
+      useAuthStore.setState({ auth: null, isReady: true });
     }
-  }, [setAuth]);
-
-  useEffect(() => {}, []);
+  }, []);
 
   const signIn = useCallback(
     async (email, password) => {
