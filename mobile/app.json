@@ -2,13 +2,13 @@
   "expo": {
     "name": "Ubuntu Art Village",
     "slug": "ubuntu-art-village",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "scheme": "ubuntuartvillage",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "runtimeVersion": "1.0.3",
+    "runtimeVersion": "1.0.4",
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -25,7 +25,7 @@
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ],
       "package": "com.ubuntuartvillage.utuapp",
-      "versionCode": 17
+      "versionCode": 18
     },
     "extra": {
       "eas": {
