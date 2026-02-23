@@ -4,7 +4,7 @@ export const runtime = "nodejs";
 
 export async function GET() {
   const { data, error } = await supabaseAdmin
-    .from("gallery_images")
+    .from("gallery")
     .select("*")
     .order("display_order", { ascending: true });
 
