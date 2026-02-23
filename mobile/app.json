@@ -3,6 +3,7 @@
     "name": "Ubuntu Art Village",
     "slug": "ubuntu-art-village",
     "version": "1.0.3",
+    "scheme": "ubuntuartvillage",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
